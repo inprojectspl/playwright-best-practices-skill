@@ -1,3 +1,5 @@
+> inprojects fork: install the focused `playwright-best-practices` package from `plugin/`. See [distribution and maintenance notes](docs/inprojects/README.md).
+
 ```
 
 ░█▀█░█░░░█▀█░█░█░█░█░█▀▄░▀█▀░█▀▀░█░█░▀█▀░░░█▀▄░█▀▀░█▀▀░▀█▀░░░█▀█░█▀▄░█▀█░█▀▀░▀█▀░▀█▀░█▀▀░█▀▀░█▀▀░
