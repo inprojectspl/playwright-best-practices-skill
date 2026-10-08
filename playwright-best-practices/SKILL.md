@@ -1,11 +1,11 @@
 ---
 name: playwright-best-practices
-description: Plan, implement and review Playwright browser E2E and HTTP API tests, including locators, waits, authentication, data isolation, traces and CI. Use when the project uses Playwright or the user requests it; component, visual and accessibility testing are optional task-specific modes.
+description: Plan, implement and review Playwright browser E2E and HTTP API tests, including locators, waits, authentication, data isolation, traces and CI. Use when the project uses Playwright or the user asks for end-to-end tests, a flaky Playwright test fix, authenticated test setup or a Playwright CI job; component, visual and accessibility testing are optional task-specific modes. Also use for Polish requests such as "testy E2E", "testy Playwright", "niestabilny test E2E" or "logowanie w testach E2E".
 license: MIT
 metadata:
   author: currents.dev
   adapted-by: inprojects
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Playwright testing

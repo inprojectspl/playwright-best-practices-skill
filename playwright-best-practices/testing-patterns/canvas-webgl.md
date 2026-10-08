@@ -95,8 +95,8 @@ test("verify canvas content", async ({ page }) => {
 test("chart matches baseline", async ({ page }) => {
   await page.goto("/dashboard");
 
-  // Wait for chart animation to complete
-  await page.waitForTimeout(1000); // Or better: wait for specific state
+  // Wait for an app-provided "render finished" signal, not a fixed delay
+  await page.waitForFunction(() => (window as any).chartReady === true);
 
   // Full page screenshot
   await expect(page).toHaveScreenshot("dashboard.png", {
@@ -469,10 +469,9 @@ test("game state changes", async ({ page }) => {
   expect(initialScore).toBe(0);
 
   await page.keyboard.press("Space"); // Action
-  await page.waitForTimeout(500);
 
-  const newScore = await page.evaluate(() => window.game?.score);
-  expect(newScore).toBeGreaterThan(0);
+  // Retry until the game loop applies the action
+  await expect.poll(() => page.evaluate(() => window.game?.score)).toBeGreaterThan(0);
 });
 ```
 

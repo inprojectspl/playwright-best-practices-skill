@@ -41,8 +41,10 @@ test("core web vitals within thresholds", async ({ page }) => {
 
   await page.goto("/");
 
-  // Wait for page to stabilize
-  await page.waitForLoadState("networkidle");
+  // Wait for the metric itself; network idleness is not a rendering signal
+  await expect
+    .poll(() => page.evaluate(() => (window as any).__webVitals.lcp))
+    .toBeGreaterThan(0);
 
   // Get metrics
   const vitals = await page.evaluate(() => (window as any).__webVitals);
@@ -81,15 +83,17 @@ test("web vitals with library", async ({ page }) => {
   // Trigger FID by clicking
   await page.getByRole("button").first().click();
 
-  // Wait and collect
-  await page.waitForTimeout(1000);
+  // Wait for the reported metric instead of a fixed delay
+  await expect
+    .poll(() => page.evaluate(() => (window as any).__vitals.lcp))
+    .toBeDefined();
 
   const vitals = await page.evaluate(() => (window as any).__vitals);
 
   console.log("Web Vitals:", vitals);
 
-  // Assertions
-  if (vitals.lcp) expect(vitals.lcp).toBeLessThan(2500);
+  // Assertions (FID and CLS are reported only after input or page hide)
+  expect(vitals.lcp).toBeLessThan(2500);
   if (vitals.fid) expect(vitals.fid).toBeLessThan(100);
   if (vitals.cls) expect(vitals.cls).toBeLessThan(0.1);
 });
@@ -227,9 +231,8 @@ test("homepage meets performance budget", async ({ page }) => {
   const budget = budgets.homepage;
 
   await page.goto("/");
-  await page.waitForLoadState("networkidle");
 
-  // Measure LCP
+  // Measure LCP (the buffered observer also returns entries recorded before this call)
   const lcp = await page.evaluate(() => {
     return new Promise<number>((resolve) => {
       new PerformanceObserver((list) => {

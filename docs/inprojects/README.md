@@ -1,6 +1,6 @@
 # inprojects distribution
 
-This GitHub fork preserves [currents-dev/playwright-best-practices-skill](https://github.com/currents-dev/playwright-best-practices-skill) history. The maintained distribution is **playwright-best-practices 1.0.0** at `plugin/`, tagged `inprojects-v1.0.0`. The repository root remains the upstream authoring repository, not the installable plugin.
+This GitHub fork preserves [currents-dev/playwright-best-practices-skill](https://github.com/currents-dev/playwright-best-practices-skill) history. The maintained distribution is **playwright-best-practices 1.0.1** at `plugin/`, tagged `inprojects-v1.0.1`. The repository root remains the upstream authoring repository, not the installable plugin.
 
 ## Provenance and scope
 

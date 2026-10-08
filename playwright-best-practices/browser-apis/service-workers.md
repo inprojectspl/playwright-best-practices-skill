@@ -266,7 +266,14 @@ test("app works offline", async ({ page, context }) => {
   await page.evaluate(async () => {
     await navigator.serviceWorker.ready;
   });
-  await page.waitForTimeout(1000); // Allow caching to complete
+  // Wait until the page is controlled and the app shell is cached
+  await expect
+    .poll(() =>
+      page.evaluate(async () =>
+        Boolean(navigator.serviceWorker.controller) && (await caches.keys()).length > 0,
+      ),
+    )
+    .toBe(true);
 
   // Go offline
   await context.setOffline(true);
@@ -412,6 +419,9 @@ test("notification click opens page", async ({ context, page }) => {
     });
   });
 
+  // Subscribe before triggering: the handler usually calls clients.openWindow()
+  const opened = context.waitForEvent("page");
+
   // Simulate clicking notification (via SW)
   const sw = context.serviceWorkers()[0];
   await sw.evaluate(() => {
@@ -422,9 +432,8 @@ test("notification click opens page", async ({ context, page }) => {
     );
   });
 
-  // Verify navigation occurred
-  await page.waitForTimeout(1000);
-  // Check if new page opened or current page navigated
+  // If the handler navigates an existing client instead, assert on that page's URL
+  await expect(await opened).toHaveURL(/\/notification-target$/);
 });
 ```
 
