@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "playwright-best-practices",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Playwright browser and API test guidance with explicit backend isolation and failure diagnosis.",
   "author": {
     "name": "inprojects AI tools"

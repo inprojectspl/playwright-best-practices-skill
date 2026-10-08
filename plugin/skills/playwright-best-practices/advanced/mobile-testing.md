@@ -176,21 +176,20 @@ test("swipe to delete", async ({ page, swipe }) => {
 
 ```typescript
 test("long press for context menu", async ({ page }) => {
+  // Control the app's long-press timer instead of sleeping in real time
+  await page.clock.install();
   await page.goto("/files");
 
   const file = page.getByText("document.pdf");
-  const box = await file.boundingBox();
+  await expect(file).toBeVisible();
 
-  if (box) {
-    // Touch down
-    await page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2);
+  // touchscreen.tap() releases immediately, so press and release explicitly.
+  // Dispatch the events your long-press handler actually listens to.
+  await file.dispatchEvent("pointerdown", { pointerType: "touch", isPrimary: true });
+  await page.clock.runFor(600); // just past the app's 500 ms threshold
+  await file.dispatchEvent("pointerup", { pointerType: "touch", isPrimary: true });
 
-    // Hold for 500ms
-    await page.waitForTimeout(500);
-
-    // Context menu should appear
-    await expect(page.getByRole("menu")).toBeVisible();
-  }
+  await expect(page.getByRole("menu")).toBeVisible();
 });
 ```
 
