@@ -1,0 +1,13 @@
+{
+  "name": "playwright-best-practices",
+  "version": "1.0.0",
+  "description": "Playwright browser and API test guidance with explicit backend isolation and failure diagnosis.",
+  "author": {
+    "name": "inprojects AI tools"
+  },
+  "repository": "https://github.com/inprojectspl/playwright-best-practices-skill",
+  "license": "MIT",
+  "skills": [
+    "./skills/"
+  ]
+}
